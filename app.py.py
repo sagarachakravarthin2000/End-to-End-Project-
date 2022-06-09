@@ -5,17 +5,15 @@ import sklearn
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def Home():
     return render_template('index.html')
 
-
-@app.route('/predict', methods=['POST', 'GET'])
+@app.route('/predict', methods=['POST','GET'])
 def results():
     bedrooms = float(request.form['bedrooms'])
     bathrooms = float(request.form['bathrooms'])
-    sqft_living = float(request.form['sqft_livng'])
+    sqft_living = float(request.form['sqft_living'])
     sqft_lot = float(request.form['sqft_lot'])
     floors = float(request.form['floors'])
     waterfront = float(request.form['waterfront'])
@@ -26,11 +24,12 @@ def results():
     yr_built = float(request.form['yr_built'])
     yr_renovated = float(request.form['yr_renovated'])
 
-    x = np.array([[bedrooms,bathroom,ssqft_living,sqft_lot,floors,waterfront,view,condition,sqft_above,sqft_basement,yr_built,yr_renovated]])
-    model = pckle.load(open('model.pkl','rb'))
+    
+    x = np.array([[bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,sqft_above,sqft_basement,yr_built,yr_renovated]])
+    model = pickle.load(open('model.pkl','rb'))
     y_predict = model.predict(x)
-    return jsonify({'predicton': float(y_predict)})
+    return jsonify({'Prediction': float(y_predict)})
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=1010)
+    app.run(debug = True, port = 1010)
